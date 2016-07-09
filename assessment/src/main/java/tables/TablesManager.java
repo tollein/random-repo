@@ -46,7 +46,7 @@ public class TablesManager {
             int id = Integer.parseInt(tmp[0]);
             int airport_ref = Integer.parseInt(tmp[1]);
             String airport_ident = tmp[2];
-            String surface = tmp[3];
+            String surface = tmp[5];
             String le_ident = tmp[7];
             listRunways.add(new Runway(id, airport_ref, airport_ident, surface, le_ident));
         }

@@ -7,15 +7,15 @@ public class Runway implements Table {
 
     int id;
     int airport_ref;
-    String airport_indent;
+    String airport_ident;
     String surface;
     String le_ident;
 
 
-    public Runway(int id, int airport_ref, String airport_indent, String surface, String le_ident) {
+    public Runway(int id, int airport_ref, String airport_ident, String surface, String le_ident) {
         this.id = id;
         this.airport_ref = airport_ref;
-        this.airport_indent = airport_indent;
+        this.airport_ident = airport_ident;
         this.surface = surface;
         this.le_ident = le_ident;
     }
@@ -28,8 +28,8 @@ public class Runway implements Table {
         return airport_ref;
     }
 
-    public String getAirport_indent() {
-        return airport_indent;
+    public String getAirport_ident() {
+        return airport_ident;
     }
 
     public String getSurface() {

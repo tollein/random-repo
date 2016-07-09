@@ -1,39 +1,65 @@
+import configuration.DBWizard;
 
-import tables.Airport;
-import tables.Country;
-import tables.Runway;
-import tables.TablesManager;
-
-import java.util.ArrayList;
+import java.util.Scanner;
 
 /**
- * Created by alessio on 05/07/16.
+ * Created by alessio on 09/07/16.
  */
 public class Main {
 
-    public static String countriesCSV = "assessment/src/main/resources/countries.csv";
-    public static String airportsCSV = "assessment/src/main/resources/airports.csv";
-    public static String runwaysCSV = "assessment/src/main/resources/runways.csv";
-
-
-    public static void main(String[] args) {
-        CSVRecovery parser = new CSVRecovery();
-
-        /* Recovery data from CVS files */
-        ArrayList<String[]> countriesA = parser.recoveryFromCSV(countriesCSV);
-        ArrayList<String[]> airportsA = parser.recoveryFromCSV(airportsCSV);
-        ArrayList<String[]> runwaysA = parser.recoveryFromCSV(runwaysCSV);
-
-        /* Filtering data */
-        ArrayList<Country> listCountries = TablesManager.filterCountryData(countriesA);
-        ArrayList<Airport> listAirports = TablesManager.filterAirportData(airportsA);
-        ArrayList<Runway> listRunways = TablesManager.filterRunwayData(runwaysA);
-
-        /* Insert data into DB tables */
+    public static void main(String args[]) {
+        Scanner input = new Scanner(System.in);
         DBWizard dbw = new DBWizard();
         dbw.connect();
-        dbw.insertCountriesRows(listCountries);
-        dbw.insertAirportsRows(listAirports);
-        dbw.disconnect();
+
+        String s = "";
+        while (!s.equals("0")) {
+            System.out.println("***************** ASSESSMENT ********************");
+            System.out.println("Insert:\n 1 = QUERY\n 2 = REPORTS\n 0 = quit");
+            s = input.nextLine();
+            switch (s) {
+                case "1":
+                    System.out.println("Insert:\n n = country name\n c = country code\n 0 = quit");
+                    String in = input.nextLine();
+                    boolean result = false;
+                    switch (in) {
+                        case "n":
+                            System.out.println("Insert a name of country: ");
+                            String name = input.nextLine();
+                            result = dbw.queryS(name);
+                            if (!result)
+                                System.out.println("There are no data with country name " + name + "\n");
+                            break;
+                        case "c":
+                            System.out.println("Insert a code of country: ");
+                            String code = input.nextLine();
+                            result = dbw.queryI(Integer.parseInt(code));
+                            if (!result)
+                                System.out.println("There are no data with country code " + code + "\n");
+                            break;
+                        case "0":
+                            System.out.println("Assessment terminated.");
+                            dbw.disconnect();
+                            System.exit(1);
+                            break;
+                        default:
+                            System.out.println("Invalid input\n");
+                            break;
+                    }
+                    break;
+                case "2":
+                    dbw.report();
+                    break;
+                case "0":
+                    System.out.println("Assessment terminated.");
+                    dbw.disconnect();
+                    System.exit(1);
+                    break;
+                default:
+                    System.out.println("Invalid input\n");
+                    break;
+            }
+        }
+
     }
 }

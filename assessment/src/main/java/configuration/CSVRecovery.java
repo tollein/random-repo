@@ -1,3 +1,5 @@
+package configuration;
+
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -22,7 +24,9 @@ public class CSVRecovery {
             String symbol = ",";
 
             while ((line = br.readLine()) != null) {
-                String[] row = line.split(symbol);
+                String lineNo2Quotes = line.replace("\"","");
+                String lineNoQuote = lineNo2Quotes.replace("'","''");
+                String[] row = lineNoQuote.split(symbol);
                 csvExtracted.add(row);
             }
         } catch (FileNotFoundException e) {
@@ -32,6 +36,4 @@ public class CSVRecovery {
         }
         return csvExtracted;
     }
-
-
 }
