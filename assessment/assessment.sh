@@ -1,7 +1,6 @@
 #!/bin/bash
 
-HOME_PROJECT=$(pwd)
-MAIN_CLASS=/home/$USER/lunatech/random-repo/out/artifacts/assessment_jar/assessment.jar
+# It run the Main class of assessment
 
-echo $MAIN_CLASS
-#nohup java -jar $MAIN_CLASS
+JAR="../out/artifacts/assessment_jar/assessment.jar"
+java -jar $JAR

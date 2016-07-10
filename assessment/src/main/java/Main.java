@@ -1,5 +1,6 @@
 import configuration.DBWizard;
 
+import java.sql.SQLException;
 import java.util.Scanner;
 
 /**
@@ -7,19 +8,32 @@ import java.util.Scanner;
  */
 public class Main {
 
-    public static void main(String args[]) {
+    public static void main(String args[]) throws SQLException {
         Scanner input = new Scanner(System.in);
         DBWizard dbw = new DBWizard();
+
+        System.out.println("**********************************************************\n" +
+                "*                      ASSESSMENT                        *\n" +
+                "**********************************************************");
+
+        /* Database population */
+        Configuration cfg = new Configuration();
+        cfg.configure();
+
+        /* Assessment */
         dbw.connect();
 
         String s = "";
         while (!s.equals("0")) {
-            System.out.println("***************** ASSESSMENT ********************");
-            System.out.println("Insert:\n 1 = QUERY\n 2 = REPORTS\n 0 = quit");
+            System.out.println("\nInsert:\n 1 = QUERY: it returns the airports & runways at each airport\n " +
+                    "2 = REPORTS: it returns:\n\t- 10 countries with highest number of airports" +
+                    "\n\t- 10 countries with lowest number of airports" +
+                    "\n\t- type of runways (as indicated in \"surface\" column) per country"+
+                    "\n 0 = QUIT");
             s = input.nextLine();
             switch (s) {
                 case "1":
-                    System.out.println("Insert:\n n = country name\n c = country code\n 0 = quit");
+                    System.out.println("\nInsert:\n n = country name\n c = country code\n 0 = quit");
                     String in = input.nextLine();
                     boolean result = false;
                     switch (in) {
