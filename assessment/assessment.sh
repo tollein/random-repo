@@ -2,5 +2,8 @@
 
 # It run the Main class of assessment
 
-JAR="../out/artifacts/assessment_jar/assessment.jar"
+JAR="target/assessment-1.0-jar-with-dependencies.jar"
+echo "Maven packaging..."
+mvn clean compile assembly:single
+echo -e "\n\n"
 java -jar $JAR

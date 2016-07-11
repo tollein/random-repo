@@ -6,10 +6,7 @@ import tables.Country;
 import tables.Runway;
 import tables.TablesManager;
 
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.Properties;
 
@@ -25,10 +22,20 @@ public class Configuration {
     private static String airportsCSV = "src/main/resources/airports.csv";
     private static String runwaysCSV = "src/main/resources/runways.csv";
 
+    /**
+     * This method runs only if the database is not populated.
+     * Operations:
+     * - recovering data from csv files;
+     * - filtering data recovered;
+     * - insert data into database tables.
+     * Finally the method creates a file with new application properties file that indicates the
+     * completion of configuration.
+     */
     public void configure() {
 
         InputStream in = null;
         in = Configuration.class.getClassLoader().getResourceAsStream("config.properties");
+
         if (in == null) {
             System.out.println("Sorry, unable to find properties file!");
             System.exit(1);
@@ -41,19 +48,19 @@ public class Configuration {
             /* Check if db is already populated */
             if (props.getProperty("db.populated").equals("yes")) {
                 System.out.println("Already populated!\n");
-                in.close();
+
             } else {
                 System.out.println("It will take a few seconds...");
                 CSVRecovery parser = new CSVRecovery();
 
                 /* Recovery data from CSV files */
-                System.out.println("\nRecovery data from CSV files");
+                System.out.println("\nRecovering data from CSV files");
                 System.out.println("1/3 countries.csv");
-                ArrayList<String[]> countriesA = parser.recoveryFromCSV(props.getProperty("csv.path") +"/"+ countriesCSV);
+                ArrayList<String[]> countriesA = parser.recoveryFromCSV(props.getProperty("csv.path") + "/" + countriesCSV);
                 System.out.println("2/3 airports.csv");
-                ArrayList<String[]> airportsA = parser.recoveryFromCSV(props.getProperty("csv.path") +"/"+ airportsCSV);
+                ArrayList<String[]> airportsA = parser.recoveryFromCSV(props.getProperty("csv.path") + "/" + airportsCSV);
                 System.out.println("3/3 runways.csv");
-                ArrayList<String[]> runwaysA = parser.recoveryFromCSV(props.getProperty("csv.path") +"/"+ runwaysCSV);
+                ArrayList<String[]> runwaysA = parser.recoveryFromCSV(props.getProperty("csv.path") + "/" + runwaysCSV);
 
                 /* Filtering useful data */
                 System.out.println("\nFiltering useful data");
@@ -75,11 +82,15 @@ public class Configuration {
                 System.out.println("3/3 Runways");
                 dbw.insertRunwaysRows(listRunways);
 
-                System.out.println("Done!");
-                props.setProperty("db.populated", "yes");
-                FileOutputStream out = new FileOutputStream("assessment/conf/config.properties");
-                props.store(out, null);
-                out.close();
+                System.out.println("Done!\n");
+
+                /* Creating new properties for the execution post-configuration */
+                PrintWriter writer = new PrintWriter(props.getProperty("csv.path") +
+                        "/src/main/resources/config.properties", "UTF-8");
+                writer.println("db.populated=yes");
+                writer.println("csv.path=" + props.getProperty("csv.path"));
+                writer.close();
+                in.close();
                 dbw.disconnect();
             }
         } catch (IOException e) {
