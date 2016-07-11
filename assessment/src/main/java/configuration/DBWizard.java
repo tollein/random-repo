@@ -102,7 +102,6 @@ public class DBWizard {
 
     /* This method gets the country name */
     public boolean queryS(String input) {
-        boolean result = false;
         try {
             ResultSet rs = null;
             rs = stmt.executeQuery("select airports.name, runways.surface " +
@@ -111,23 +110,27 @@ public class DBWizard {
                     "where c.name = '" + input + "' " +
                     "and runways.airport_ref = airports.id " +
                     "group by airports.name;");
-            while (rs.next()) {
-                System.out.println(rs.getString(1) + " | " +
-                        rs.getString(2));
+            /* Check for no result */
+            if (!rs.isBeforeFirst()) {
+                return false;
+            } else {
+                while (rs.next()) {
+                    System.out.println(rs.getString(1) + " | " +
+                            rs.getString(2));
+                }
             }
-            return result;
+            return true;
         } catch (SQLException e) {
             e.printStackTrace();
-            return result;
+            return false;
         } catch (Exception e) {
             e.printStackTrace();
-            return result;
+            return false;
         }
     }
 
     /* This method gets the country code */
     public boolean queryI(int input) {
-        boolean result = false;
         try {
             ResultSet rs = null;
             String query = ("select airports.name as airport, runways.surface as runway\n" +
@@ -135,17 +138,22 @@ public class DBWizard {
                     "where airports.iso_country = " + input + " and runways.airport_ref = airports.id\n" +
                     "group by airports.name;");
             rs = stmt.executeQuery(query);
-            while (rs.next()) {
-                System.out.println(rs.getString(1) + " | " +
-                        rs.getString(2));
+            /* Check for no result */
+            if (!rs.isBeforeFirst()) {
+                return false;
+            } else {
+                while (rs.next()) {
+                    System.out.println(rs.getString(1) + " | " +
+                            rs.getString(2));
+                }
             }
-            return result;
+            return true;
         } catch (SQLException e) {
             e.printStackTrace();
-            return result;
+            return false;
         } catch (Exception e) {
             e.printStackTrace();
-            return result;
+            return false;
         }
     }
 
