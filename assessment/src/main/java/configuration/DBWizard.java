@@ -45,7 +45,7 @@ public class DBWizard {
         }
     }
 
-    /* It insert filtered countries values into table */
+    /* It inserts filtered countries values into table */
     public void insertCountriesRows(ArrayList<Country> rows) {
         if (stmt != null) {
             try {
@@ -62,7 +62,7 @@ public class DBWizard {
         }
     }
 
-    /* It insert filtered airports values into table */
+    /* It inserts filtered airports values into table */
     public void insertAirportsRows(ArrayList<Airport> rows) {
         if (stmt != null) {
             try {
@@ -82,7 +82,7 @@ public class DBWizard {
         }
     }
 
-    /* It insert filtered runways values into table */
+    /* It inserts filtered runways values into table */
     public void insertRunwaysRows(ArrayList<Runway> rows) {
         if (stmt != null) {
             try {

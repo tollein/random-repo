@@ -84,7 +84,7 @@ public class Configuration {
 
                 System.out.println("Done!\n");
 
-                /* Creating new properties for the execution post-configuration */
+                /* Creating new properties for a new execution after the configuration */
                 PrintWriter writer = new PrintWriter(props.getProperty("csv.path") +
                         "/src/main/resources/config.properties", "UTF-8");
                 writer.println("db.populated=yes");

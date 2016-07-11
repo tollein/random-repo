@@ -21,8 +21,5 @@ To run the assessment, in the assessment folder run the script:
 ```
 $ ./assessment.sh
 ```
-or simply run this command in the terminal:
-```
-$ java -jar ../out/artifacts/assessment_jar/assessment.jar
-```
+
 `NOTE: At the first execution, this script populates the database, so it will take a few seconds.`
